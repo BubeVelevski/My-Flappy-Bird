@@ -13,17 +13,26 @@ public class BirdController : MonoBehaviour
 
     private void Start()
     {
+        Time.timeScale = 0f;
         birdRb = GetComponent<Rigidbody2D>();
 
     }
 
     private void Update()
     {
+#if UNITY_STANDALONE || UNITY_STANDALONE_WIN || UNITY_EDITOR
         if (Input.GetMouseButtonDown(0))
         {
             birdRb.velocity = Vector2.up * velocity;
         }
+#elif UNITY_ANDROID
+    if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
+    {
+        birdRb.velocity = Vector2.up * velocity;
     }
+#endif
+    }
+
 
     private void FixedUpdate()
     {
